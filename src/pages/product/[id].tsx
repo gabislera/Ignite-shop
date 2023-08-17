@@ -18,11 +18,10 @@ interface ProductProps {
   }
 }
 
-export default function Product({ product }: ProductProps ) {
+export default function Product({ product }: ProductProps) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
-  async function handleBuyButton() {
-    // console.log(product.defaultPriceId)
 
+  async function handleBuyButton() {
     try {
       setIsCreatingCheckoutSession(true)
 
@@ -48,7 +47,7 @@ export default function Product({ product }: ProductProps ) {
 
       <ProductContainer>
         <ImageContainer>
-          <Image src={product.imageUrl} alt="" width={520} height={480}/>
+          <Image src={product.imageUrl} alt="" width={520} height={480} />
         </ImageContainer>
 
         <ProductDetails>
