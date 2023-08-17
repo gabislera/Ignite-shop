@@ -4,37 +4,28 @@ import logoImg from '../assets/logo.svg'
 import { Button, Container, Header } from "../styles/pages/app"
 import Image from "next/image"
 import Link from "next/link"
-import * as Dialog from '@radix-ui/react-dialog'
-import { Drawer } from "../components/Drawer"
-import { Handbag } from "@phosphor-icons/react"
+import { CartProvider } from "../contexts/CartContext"
+import { useCart } from "../hooks/useCart"
+import { CartButton } from "../components/CartButton"
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
-  const cartQuantity = 4
-
   return (
     <Container>
-      <Header>
-        <div>
-          <Link href={'/'}>
-            <Image src={logoImg} alt="" />
-          </Link>
+      <CartProvider>
 
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <Button>
-                {cartQuantity > 0 && <span>{cartQuantity}</span>}
-                <Handbag size={24} color="white" />
-              </Button>
-            </Dialog.Trigger>
+        <Header>
+          <div>
+            <Link href={'/'}>
+              <Image src={logoImg} alt="" />
+            </Link>
+            <CartButton />
+          </div>
+        </Header>
 
-            <Drawer />
-          </Dialog.Root>
-        </div>
-      </Header>
-
-      <Component {...pageProps} />
+        <Component {...pageProps} />
+      </CartProvider>
     </Container>
   )
 }

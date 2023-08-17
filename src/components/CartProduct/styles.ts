@@ -5,25 +5,29 @@ export const ProductsCartContainer = styled('div', {
   alignItems: 'flex-start',
   gap: 20,
   color: '$gray100',
+})
 
-  div: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: "flex-start",
-  },
+export const DetailsSection = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: "flex-start",
+  margin: 'auto 0',
 
   strong: {
     marginTop: 4,
   },
 
-  a: {
+  button: {
+    background: 'none',
+    border: 0,
     color: '$green500',
     textDecoration: 'none',
-    marginTop: 8
+    marginTop: 8,
+    cursor: 'pointer',
   },
 
   '&:hover': {
-    a: {
+    button: {
       color: '$green300',
     }
   }
@@ -32,15 +36,12 @@ export const ProductsCartContainer = styled('div', {
 export const ImageBackground = styled('div', {
   background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
-  cursor: 'pointer',
-  position: 'relative',
-  overflow: 'hidden',
   height: '6rem',
   width: '6rem',
 
   display: 'flex',
-  alignItems: 'center',
   justifyContent: 'center',
+  alignItems: 'center',
 
   img: {
     objectFit: 'cover'

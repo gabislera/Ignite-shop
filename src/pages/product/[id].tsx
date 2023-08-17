@@ -6,6 +6,7 @@ import Image from "next/image"
 import axios from "axios"
 import { useState } from "react"
 import Head from "next/head"
+import { useCart } from "../../hooks/useCart"
 
 interface ProductProps {
   product: {
@@ -20,24 +21,30 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
+  const { addToCart } = useCart()
 
-  async function handleBuyButton() {
-    try {
-      setIsCreatingCheckoutSession(true)
-
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId,
-      })
-
-      const { checkoutUrl } = response.data;
-
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      setIsCreatingCheckoutSession(false)
-
-      alert('Falha ao redirecionar ao checkout!')
-    }
+  function handleAddToCart(product) {
+    addToCart(product)
   }
+
+
+  // async function handleBuyButton() {
+  // try {
+  //   setIsCreatingCheckoutSession(true)
+
+  //   const response = await axios.post('/api/checkout', {
+  //     priceId: product.defaultPriceId,
+  //   })
+
+  //   const { checkoutUrl } = response.data;
+
+  //   window.location.href = checkoutUrl;
+  // } catch (err) {
+  //   setIsCreatingCheckoutSession(false)
+
+  //   alert('Falha ao redirecionar ao checkout!')
+  // }
+  // }
 
   return (
     <>
@@ -56,8 +63,8 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleBuyButton}>
-            Comprar agora
+          <button disabled={isCreatingCheckoutSession} onClick={handleAddToCart}>
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>

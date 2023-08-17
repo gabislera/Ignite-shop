@@ -1,16 +1,24 @@
-import { ImageBackground, ProductsCartContainer } from "./styles";
+import { useCart } from "../../hooks/useCart";
+import { DetailsSection, ImageBackground, ProductsCartContainer } from "./styles";
+import Image from 'next/image'
 
-export function CartProduct() {
+export function CartProduct({ product }) {
+  const { removeFromCart } = useCart()
+
+  function handleRemoveFromCart() {
+    removeFromCart(product)
+  }
+
   return (
     <ProductsCartContainer>
       <ImageBackground>
-        <img src="" alt="" />
+        <Image src={product.imageUrl} width={60} height={56} alt='' />
       </ImageBackground>
-      <div>
-        <span>Camiseta Beyond the Limits</span>
-        <strong>R$ 79,90</strong>
-        <a href="">Remover</a>
-      </div>
+      <DetailsSection>
+        <span>{product.name}</span>
+        <strong>{product.price}</strong>
+        <button onClick={handleRemoveFromCart}>Remover</button>
+      </DetailsSection>
     </ProductsCartContainer>
   )
 }

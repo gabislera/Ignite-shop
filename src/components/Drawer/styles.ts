@@ -45,7 +45,7 @@ export const DrawerContainer = styled(Dialog.Content, {
 export const DrawerContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  margin: 'auto',
+  margin: '2rem auto 0',
   width: '100%',
 
   h1: {
@@ -59,7 +59,7 @@ export const ProductsCartSection = styled('div', {
   display: 'flex',
   flexDirection: 'column',
 
-  maxHeight: 285,
+  maxHeight: 410,
   overflowY: 'scroll',
 
   '&::-webkit-scrollbar': {
@@ -72,7 +72,7 @@ export const ProductsCartSection = styled('div', {
 })
 
 export const SummarySection = styled('div', {
-  marginTop: 200,
+  marginTop: 150,
   display: 'flex',
   gap: 7,
   flexDirection: 'column',
@@ -83,7 +83,6 @@ export const QuantityItem = styled('div', {
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
-
 
   span: {
     fontSize: '$sm'
