@@ -7,11 +7,15 @@ import * as Dialog from '@radix-ui/react-dialog'
 export function CartButton() {
   const { cart } = useCart()
 
+  const productsAmount = cart.reduce((acc, item) => {
+    return acc + item.quantity
+  }, 0)
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <Button>
-          {cart.length > 0 && <span>{cart.length}</span>}
+          {productsAmount > 0 && <span>{productsAmount}</span>}
           <Handbag size={24} color="white" />
         </Button>
       </Dialog.Trigger>

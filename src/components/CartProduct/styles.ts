@@ -38,6 +38,7 @@ export const ImageBackground = styled('div', {
   borderRadius: 8,
   height: '6rem',
   width: '6rem',
+  position: 'relative',
 
   display: 'flex',
   justifyContent: 'center',
@@ -45,6 +46,23 @@ export const ImageBackground = styled('div', {
 
   img: {
     objectFit: 'cover'
+  },
+
+  span: {
+    position: 'absolute',
+    width: '1.8rem',
+    height: '1.8rem',
+    borderRadius: '50%',
+    background: '$green500',
+    color: '$white',
+    top: 'calc(-1.6rem / 2)',
+    right: 'calc(-1.6rem / 2)',
+    border: '3px solid black',
+    fontSize: '$sm',
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 

@@ -58,6 +58,7 @@ export const DrawerContent = styled('div', {
 export const ProductsCartSection = styled('div', {
   display: 'flex',
   flexDirection: 'column',
+  paddingTop: 15,
 
   maxHeight: 410,
   overflowY: 'scroll',

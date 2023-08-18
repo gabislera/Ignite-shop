@@ -3,13 +3,25 @@ import Link from "next/link";
 import Image from 'next/image'
 import { Button, Product } from "./styles";
 import { useCart } from "../../hooks/useCart";
+import { priceFormat } from "../../utils/priceFormat";
+interface ProductSlideProps {
+  product: any
+  defaultPriceId?: any
+}
 
-export function ProductSlide({ product }) {
+export function ProductSlide({ product }: ProductSlideProps) {
   const { addToCart } = useCart()
 
   function handleAddToCart() {
-    addToCart(product)
+    const productWithQty = {
+      ...product,
+      quantity: 1
+    };
+    addToCart(productWithQty);
+
   }
+
+  const formattedPrice = priceFormat(product.price)
 
   return (
     <Product className='keen-slider__slide'>
@@ -20,7 +32,7 @@ export function ProductSlide({ product }) {
       <footer>
         <div>
           <strong>{product.name}</strong>
-          <span>{product.price}</span>
+          <span>{formattedPrice}</span>
         </div>
         <Button onClick={handleAddToCart}>
           <Handbag size={32} color="white" />
