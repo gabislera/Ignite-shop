@@ -1,5 +1,6 @@
-import axios from "axios";
+import { parseCookies, setCookie } from "nookies";
 import { ReactNode, createContext, useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 
 interface CartProviderProps {
   children: ReactNode
@@ -16,32 +17,36 @@ interface ProductProps {
 
 interface CartContextProps {
   cart: ProductProps[]
-  // isCreatingCheckoutSession: boolean
   addToCart: (product: ProductProps) => void
   removeFromCart: (product: ProductProps) => void
-  // checkoutSession: () => void
+  clearCart: () => void
 }
+
+const CART_STORAGE_KEY = 'IgniteShop:cart'
 
 export const CartContext = createContext({} as CartContextProps)
 
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<ProductProps[]>([])
 
-  // function addToCart(product: ProductProps) {
-  //   const existingProductIndex = cart.findIndex(item => item.id === product.id)
+  useEffect(() => {
+    const storedCart = parseCookies()[CART_STORAGE_KEY];
 
-  //   if (existingProductIndex < 0) {
-  //     setCart(prev => [...prev, product])
-  //   } else {
-  //     const updatedCart = cart.map((item, index) => {
-  //       if (index === existingProductIndex) {
-  //         return { ...item, quantity: item.quantity + 1 }
-  //       }
-  //       return item
-  //     })
-  //     setCart(updatedCart)
-  //   }
-  // }
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+      // console.log(JSON.parse(storedCart))
+
+    }
+  }, []);
+
+  useEffect(() => {
+    setCookie(null, CART_STORAGE_KEY, JSON.stringify(cart), {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+    });
+    // console.log('Salvou o cookie:', JSON.stringify(cart))
+  }, [cart]);
+
 
   function addToCart(product: ProductProps) {
     const existingProduct = cart.find(item => item.id === product.id);
@@ -54,33 +59,11 @@ export function CartProvider({ children }: CartProviderProps) {
         return item;
       });
       setCart(updatedCart);
+      // toast.success('Produto adicionado ao carrinho')
     } else {
       setCart(prev => [...prev, { ...product, quantity: 1 }]);
     }
   }
-
-
-
-  // async function checkoutSession() {
-  //   try {
-  //     setIsCreatingCheckoutSession(true)
-
-  //     const priceIds = cart.map(item => item.defaultPriceId)
-  //     console.log(priceIds)
-
-  //     const response = await axios.post('/api/checkout', {
-  //       priceIds: priceIds, // Envia os IDs dos preços dos produtos
-  //     });
-
-  //     // const { checkoutUrl } = response.data;
-
-  //     // window.location.href = checkoutUrl;
-  //   } catch (err) {
-  //     setIsCreatingCheckoutSession(false)
-
-  //     alert('Falha ao redirecionar ao checkout!')
-  //   }
-  // }
 
   function removeFromCart(product: ProductProps) {
     const updatedCart = cart.map((item) => {
@@ -93,12 +76,12 @@ export function CartProvider({ children }: CartProviderProps) {
     setCart(updatedCart);
   }
 
-  useEffect(() => {
-    console.log(cart)
-  }, [cart])
+  function clearCart() {
+    setCart([])
+  }
 
   return (
-    <CartContext.Provider value={{ addToCart, cart, removeFromCart }}>
+    <CartContext.Provider value={{ addToCart, cart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   )
