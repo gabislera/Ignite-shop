@@ -5,21 +5,21 @@ import { X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { priceFormat } from '../../utils/priceFormat'
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useState } from "react";
 
 export const Drawer = () => {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
-  const { cart } = useCart()
+  const { cart, clearCart } = useCart()
 
-  const productsAmount = cart.reduce((acc, item) => {
-    return acc + item.quantity
-  }, 0)
+  const cartSummary = cart.reduce((acc, item) => {
+    return {
+      productsAmount: acc.productsAmount + item.quantity,
+      totalPrice: acc.totalPrice + (item.price * item.quantity)
+    };
+  }, { productsAmount: 0, totalPrice: 0 })
 
-  const totalPrice = cart.reduce((acc, item) => {
-    return acc + (item.price * item.quantity)
-  }, 0)
-
-  const formattedTotalItemsPrice = priceFormat(totalPrice)
+  const formattedTotalItemsPrice = priceFormat(cartSummary.totalPrice)
 
   async function handleBuyButton() {
     try {
@@ -27,15 +27,15 @@ export const Drawer = () => {
 
       const response = await axios.post('/api/checkout', {
         cart,
-      });
+      })
 
-      const { checkoutUrl } = response.data;
+      const { checkoutUrl } = response.data
 
-      window.location.href = checkoutUrl;
+      window.location.href = checkoutUrl
+      clearCart()
     } catch (err) {
       setIsCreatingCheckoutSession(false)
-
-      alert('Falha ao redirecionar ao checkout!')
+      toast.error('Falha ao redirecionar ao checkout!')
     }
   }
 
@@ -57,7 +57,7 @@ export const Drawer = () => {
           <SummarySection>
             <QuantityItem>
               <span>Quantidade</span>
-              <strong>{productsAmount} itens</strong>
+              <strong>{cartSummary.productsAmount} itens</strong>
             </QuantityItem>
             <TotalValue>
               <span>Valor total</span>

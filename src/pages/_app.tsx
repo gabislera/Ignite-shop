@@ -1,15 +1,13 @@
 import { AppProps } from "next/app"
 import { globalStyles } from "../styles/global"
 import logoImg from '../assets/logo.svg'
-import { Button, Container, Header } from "../styles/pages/app"
+import { Container, Header } from "../styles/pages/app"
 import Image from "next/image"
 import Link from "next/link"
 import { CartProvider } from "../contexts/CartContext"
-import { useCart } from "../hooks/useCart"
 import { CartButton } from "../components/CartButton"
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 
 globalStyles()
 

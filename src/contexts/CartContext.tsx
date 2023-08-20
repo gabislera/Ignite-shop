@@ -1,5 +1,5 @@
-import { parseCookies, setCookie } from "nookies";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 
 interface CartProviderProps {
@@ -29,56 +29,55 @@ export const CartContext = createContext({} as CartContextProps)
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<ProductProps[]>([])
 
-  useEffect(() => {
-    const storedCart = parseCookies()[CART_STORAGE_KEY];
-
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-      // console.log(JSON.parse(storedCart))
-
-    }
-  }, []);
-
-  useEffect(() => {
-    setCookie(null, CART_STORAGE_KEY, JSON.stringify(cart), {
-      maxAge: 30 * 24 * 60 * 60,
-      path: "/",
-    });
-    // console.log('Salvou o cookie:', JSON.stringify(cart))
-  }, [cart]);
-
-
   function addToCart(product: ProductProps) {
-    const existingProduct = cart.find(item => item.id === product.id);
+    const existingProduct = cart.find(item => item.id === product.id)
 
     if (existingProduct) {
       const updatedCart = cart.map(item => {
         if (item.id === existingProduct.id) {
-          return { ...item, quantity: item.quantity + 1 };
+          return { ...item, quantity: item.quantity + 1 }
         }
-        return item;
+        return item
       });
-      setCart(updatedCart);
-      // toast.success('Produto adicionado ao carrinho')
+      setCart(updatedCart)
+      toast.success('Produto adicionado ao carrinho')
     } else {
-      setCart(prev => [...prev, { ...product, quantity: 1 }]);
+      setCart(prev => [...prev, { ...product, quantity: 1 }])
     }
   }
 
   function removeFromCart(product: ProductProps) {
     const updatedCart = cart.map((item) => {
       if (item.id === product.id) {
-        const quantityUpdated = (item.quantity - 1);
-        return { ...item, quantity: quantityUpdated };
+        const quantityUpdated = (item.quantity - 1)
+        return { ...item, quantity: quantityUpdated }
       }
       return item;
-    }).filter(item => item.quantity) // Filtra os itens com quantidade maior que zero
-    setCart(updatedCart);
+    }).filter(item => item.quantity)
+    setCart(updatedCart)
   }
 
   function clearCart() {
     setCart([])
+    destroyCookie(null, CART_STORAGE_KEY)
   }
+
+  useEffect(() => {
+    const storedCart = parseCookies()[CART_STORAGE_KEY]
+
+    if (storedCart) {
+      setCart(JSON.parse(storedCart))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      setCookie(null, CART_STORAGE_KEY, JSON.stringify(cart), {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      })
+    }
+  }, [cart])
 
   return (
     <CartContext.Provider value={{ addToCart, cart, removeFromCart, clearCart }}>
@@ -86,3 +85,4 @@ export function CartProvider({ children }: CartProviderProps) {
     </CartContext.Provider>
   )
 }
+
