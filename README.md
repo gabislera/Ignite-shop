@@ -1,7 +1,7 @@
 ![igniteshop](https://github.com/gabislera/Ignite-shop/assets/112272723/f365c0b2-e799-430c-8bf7-73ac634dc484)
 
 # Ignite-shop
-A e-commerce website where the user can scroll through products, add them to cart and complete the purchase. The project uses stripe api to redirect and manage sales.
+'A e-commerce website where the user can scroll through products, add them to cart and complete the purchase. The project uses stripe api to redirect and manage sales.'
 
 
 ## Functionalities
