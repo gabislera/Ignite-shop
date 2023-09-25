@@ -6,6 +6,7 @@ import Image from "next/image"
 import Head from "next/head"
 import { useCart } from "../../hooks/useCart"
 import { priceFormat } from "../../utils/priceFormat"
+import { toast } from "react-toastify"
 
 interface ProductProps {
   product: {
@@ -27,6 +28,8 @@ export default function Product({ product }: ProductProps) {
       quantity: 1
     };
     addToCart(productWithQty);
+    toast.success('Produto adicionado ao carrinho')
+
   }
 
   const formattedPrice = priceFormat(product.price)

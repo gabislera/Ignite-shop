@@ -40,7 +40,7 @@ export function CartProvider({ children }: CartProviderProps) {
         return item
       });
       setCart(updatedCart)
-      toast.success('Produto adicionado ao carrinho')
+      // toast.success('Produto adicionado ao carrinho')
     } else {
       setCart(prev => [...prev, { ...product, quantity: 1 }])
     }
